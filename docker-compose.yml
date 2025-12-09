@@ -1,0 +1,18 @@
+services:
+  controller:
+    build: ./controller
+    ports:
+      - "8080:8080"
+    networks:
+      - agent-net
+
+  agent:
+    build: ./agent
+    depends_on:
+      - controller
+    command: ["./agent", "-controller", "controller:8080"]
+    networks:
+      - agent-net
+
+networks:
+  agent-net:
