@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent
+  labels:
+    app: agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent
+  template:
+    metadata:
+      labels:
+        app: agent
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: agent
+        image: aje35hk/agent:v1
+        # imagePullPolicy: Never
+        # Assuming controller is reachable at host.docker.internal for Kind on Mac.
+        # If your controller is elsewhere, update this arg.
+        # args: ["-controller", "host.docker.internal:8080"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: agent-default-admin
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
