@@ -41,7 +41,7 @@ func main() {
 		// We continue even if K8s init fails, as we might want to run other commands or retry later
 	}
 
-	controllerAddr := flag.String("controller", "localhost:8080", "Controller address")
+	controllerAddr := flag.String("controller", "commander-service:8080", "Controller address")
 	flag.Parse()
 
 	u := url.URL{
